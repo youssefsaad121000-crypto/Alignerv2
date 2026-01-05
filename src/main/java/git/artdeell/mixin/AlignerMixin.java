@@ -17,8 +17,6 @@ import static git.artdeell.Aligner.LOGGER;
 @Mixin(VertexFormat.Builder.class)
 @SuppressWarnings("unused")
 public class AlignerMixin {
-    private static final int VERTEX_FORMAT_SIZE_ALIGNMENT = 4;
-
     @Shadow private int offset;
 
     @Inject(method = "add", at = @At(value = "HEAD"))
@@ -40,7 +38,7 @@ public class AlignerMixin {
         if(misalignment != 0) {
             offset += requiredAlignment - misalignment;
             // Store the new, aligned offset to avoid messing up the offsets of subsequent entries.
-            //this.offset = offset;
+            this.offset = offset;
             LOGGER.warn("Attribute {} is not aligned (expected {}-byte alignment). New offset: {}", nameRef.get(), requiredAlignment, offset);
         }
 		return original.call(instance, offset);
